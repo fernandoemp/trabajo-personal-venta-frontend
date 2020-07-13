@@ -1,0 +1,135 @@
+<div class="row justify-content-center mx-auto rounded bg-color-fondo py-3">
+    <p class="col-md-12 text-center h2 text-dark font-weint-bold">
+        Novedades
+    </p>
+    <div class="col-md-4 col-lg-3 py-3">
+        <div class="card fadeIn bg-categorias borde-sombra">
+            <article class="card-group-item">
+                <div class="card-header">
+                    <h6 class="title text-center h4 font-weight-bold">Categorías</h6>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <button (click)="getNovedades()" class="list-group-item">Sin Procesar <span class="float-right badge badge-danger round mt-1 pt-1">{{ totalSinProcesar }} </span></button>
+                        <button (click)="getNovedadesProcesadas()" class="list-group-item  btn ">Procesadas <span class="float-right badge badge-dark round mt-1 pt-1">{{ totalProcesadas }}</span></button>
+                        <button *ngIf="loginService.userPerfil == 'Administrador'" (click)="getNovedadesBorradas()" class="list-group-item">Borradas <span class="float-right badge badge-dark round mt-1 pt-1">{{ totalBorradas }} </span> </button>
+                        <button type="button" *ngIf="loginService.userPerfil == 'Administrador'" [disabled]="borradas.length == 0" (click)="deleteAllNovedadesPermanente()" class="btn btn-danger">Eliminar Borradas Definitivamente</button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <div class="col-md-8 col-lg-9">
+        <div class="row mb-2">
+            <div class="col-md-12 py-2">
+                <div class="card borde-sombra text-dark mt-2 fadeInDown  m-1" *ngFor="let nov of novedades; index as i">
+                    <div class="card-header text-light bg-titulo-novedad">
+                        <div class="row justify-content-center justify-content-sm-start align-items-center">
+                            <div class="col-auto">
+                                <img [src]=" nov.usuario.fotoPerfil" class="img-fluid rounded-circle img-fluid tamaño-imagen">
+                            </div>
+                            <div class="col-12 col-sm-9">
+                                <p class="h4 text-center text-sm-left text-dark"> {{ nov.asunto }}</p>
+                                <div class="row justify-content-center justify-content-sm-start align-items-center">
+                                    <div class="col-auto">
+                                        <p class="h6 text-dark"> <i class="far fa-user mr-1"></i> {{ nov.usuario.usuario }}</p>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p class="h6 text-dark"><i class="far fa-clock mr-1"></i> {{ nov.fechaPublicacion | date: 'dd/MM/yy HH:mm' }}</p>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center justify-content-sm-start align-items-center" *ngIf="nov.fechaProcesado != null">
+                                    <div class="col-auto">
+                                        <p class="h6 text-danger"><i class="fas fa-user mr-1"></i> Procesado por: {{ nov.procesadoPor }}</p>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p class="h6 text-danger"><i class="far fa-clock mr-1"></i> {{ nov.fechaProcesado | date: 'dd/MM/yy HH:mm' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center mx-auto justify-content-center">
+                            <div class="col-10 content mt-2 text-left" id="texto" name="texto" *ngIf="booleans[i] == true">
+                                {{ nov.texto }}
+                            </div>
+                            <div class="col-12 text-center mt-2">
+                                <button type="button" (click)="mostrarNovedad(i)" *ngIf="booleans[i] == false" class="btn btn-outline-danger btn-sm m-2">Mostrar</button>
+                                <button type="button" (click)="procesarNovedad(i, nov)" *ngIf="booleans[i] == true && nov.estado == 'Pendiente'" class="m-2 btn btn-outline-danger btn-sm">Procesar</button>
+                                <button type="button" *ngIf="nov.fechaRespuesta == null && nov.estado == 'Procesado'  && booleans[i] == true" class="btn m-2 btn-outline-dark btn-sm" (click)="abrirModal(mensajeModal,nov)"><i class="fas fa-envelope-open-text"></i></button>
+                                <button type="button" *ngIf="nov.fechaRespuesta != null && booleans[i] == true" class="btn btn-outline-dark btn-sm m-2" (click)="abrirMensajeModal(leerMensajeModal,nov)"><i class="far fa-envelope-open"></i> Ver</button>
+                                <button type="button" (click)="cerrarNovedad(i)" *ngIf="booleans[i] == true" class="btn btn-outline-danger btn-sm m-2">Cerrar</button>
+                                <button type="button" (click)="deleteNovedad(nov,i)" *ngIf="nov.estado == 'Procesado' && nov.borrado == false && booleans[i] == true" class="m-2 btn btn-outline-danger btn-sm">Borrar</button>
+                                <button type="button" (click)="deleteNovedadPermanente(nov,i)" *ngIf="nov.estado == 'Procesado' && loginService.userPerfil == 'Administrador' && nov.borrado == true && booleans[i] == true" class="btn btn-outline-danger m-2 btn-sm">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <ng-template #mensajeModal let-modal class="modal">
+                            <div class="modal-content fadeIn">
+                                <div class="modal-header text-center encabezado-modal text-light">
+                                    <h4 class="modal-title w-100 font-weight-bold">Mensaje Privado</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="limpiarCampos();modal.close()">
+                                   <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <div class="md-form mb-4">
+                                        <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-portrait"></i> Para </label>
+                                        <output type="text" id="orangeForm-name" class="form-control validate">{{ nov.usuario.usuario }}</output>
+                                    </div>
+                                    <div class="md-form mb-5">
+                                        <label data-error="wrong" data-success="right" for="orangeForm-name"><i class="fas fa-user-tie"></i> Asunto </label>
+                                        <textarea readonly type="text" id="orangeForm-name" class="form-control validate">Re: {{ nov.asunto }}</textarea>
+                                    </div>
+                                    <div class="md-form mb-4">
+                                        <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-user-tie"></i> Mensaje </label>
+                                        <textarea type="text" rows="4" id="orangeForm-name" class="form-control validate" [(ngModel)]="mensaje.texto"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-outline-dark btn-light m-1" (click)="enviarMensaje(); modal.close()">Enviar</button>
+                                    <button type="button" class="btn btn-outline-dark btn-light m-1" (click)="limpiarCampos();modal.close()">Cancelar</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <ng-template #leerMensajeModal let-modal class="modal">
+            <div class="modal-content fadeIn">
+                <div class="modal-header text-center encabezado-modal text-light">
+                    <h4 class="modal-title w-100 font-weight-bold">Mensaje</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="limpiarCampos();modal.close()">
+           <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-4">
+                        <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-portrait"></i> Para </label>
+                        <output type="text" id="orangeForm-name" class="form-control validate">{{mensaje.usuarioDestinatario}}</output>
+                    </div>
+                    <div class="md-form mb-4">
+                        <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-portrait"></i> Procesado por: </label>
+                        <output type="text" id="orangeForm-name" class="form-control validate">{{ mensaje.usuarioRemitente }}</output>
+                    </div>
+                    <div class="md-form mb-5">
+                        <label data-error="wrong" data-success="right" for="orangeForm-name"><i class="fas fa-user-tie"></i> Asunto </label>
+                        <textarea readonly type="text" rows="2" id="orangeForm-name" class="form-control validate">{{ mensaje.asunto }}</textarea>
+                    </div>
+                    <div class="md-form mb-4">
+                        <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-user-tie"></i> Mensaje </label>
+                        <textarea readonly type="text" rows="4" id="orangeForm-name" class="form-control validate"> {{ mensaje.texto }}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-dark btn-light" (click)="limpiarCampos();modal.close()">Cerrar</button>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

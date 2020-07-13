@@ -1,0 +1,112 @@
+<div class="row justify-content-center pb-5 bg-color-fondo fadeInDown img-fluid">
+    <div class="col-10">
+        <div class="card borde-sombra imagen-fondo text-light mt-3">
+            <div class="card-body">
+                <h2 class="h1-responsive font-weight-bold text-center my-4">Contáctenos</h2>
+                <p class="text-center w-responsive mx-auto h5 mb-5">Utiliza estos medios de comunicacion para poder informarnos sobre cualquier eventualidad que consideres que debamos conocér respecto a los locales; problemas con la infraestructua de algun local o informacion relacionada con los pagos,
+                    o con la atención al cliente recibida.<br>Tambien para recibir más información sobre los nuevos locales que se agregan semanalmente.</p>
+                <div class="row">
+                    <div class="col-md-9 mb-md-0 mb-5">
+                        <p class="h1 font-weight-bold text-center my-4">Novedades</p>
+                        <p class="h3 font-weight-bold text-center my-4">Utiliza esta sección para dejar un mensaje directo a nuestro staff de atención al cliente. Recuerda ante todo el respeto.<br>Nos pondremos en contacto lo más pronto posible.</p>
+                        <form #formnovedad="ngForm" id="formnovedad" autocomplete="off" (ngSubmit)="onSubmit(formnovedad)" method="POST">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="md-form mb-0">
+                                        <label for="email" class="">E-mail</label>
+                                        <output type="text" id="email" name="email" class="form-control">{{novedad.usuario.usuario}}</output>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="md-form mb-0">
+                                        <label for="subject" class="">Asunto</label>
+                                        <input type="text" id="subject" name="subject" #subject="ngModel" required minlength="10" class="form-control" [(ngModel)]="novedad.asunto">
+                                        <div *ngIf="subject.invalid && (subject.dirty || subject.touched)" class="alert alert-danger">
+                                            <div *ngIf="subject.errors.required">
+                                                Ingrese un titulo descriptivo
+                                            </div>
+                                            <div *ngIf="subject.errors.minlength">
+                                                Debe ser más descriptivo
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="md-form">
+                                        <label for="mensaje">Mensaje</label>
+                                        <textarea type="text" id="mensaje" name="mensaje" required #mensaje="ngModel" minlength='20' rows="4" class="form-control md-textarea" [(ngModel)]="novedad.texto"></textarea>
+                                        <div *ngIf="mensaje.invalid && (mensaje.dirty || mensaje.touched)" class="alert alert-danger">
+                                            <div *ngIf="mensaje.errors.required">
+                                                Ingrese el mensaje
+                                            </div>
+                                            <div *ngIf="mensaje.errors.minlength">
+                                                Debe ser más descriptivo
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class=" text-center text-md-left mt-2 efectoScale">
+                                <button class="btn boton-personalizado m-1" type="submit" [disabled]="!formnovedad.valid" (click)="enviarNovedad()">Enviar</button>
+                                <button class="btn boton-personalizado m-1" type="reset" (click)="limpiarCampos()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-3 text-center">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <div class="card card-efect text-center">
+                                    <img class="card-img-top" src="./../../../assets/contactenos/central.jpg" alt="Card image cap">
+                                    <div class="card-body" id="card">
+                                        <h5 class="card-title text-dark">Casa Central Buenos Aires, Argentina</h5>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="https://www.google.com/maps/d/embed?mid=1w9Lf7lj-Fod7IFTCDp84I_mUS9U"><i class="fas fa-map"></i></a>
+                                            </div>
+                                            <div class="col">
+                                                <a href="mailto:test@test.com"><i class="fas fa-envelope"></i></a>
+                                            </div>
+                                            <div class="col">
+                                                <a href="tel:+123456789"><i class="fas fa-phone"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mt-2">
+                                <div class="card card-efect text-center">
+                                    <img class="card-img-top" src="./../../../assets/contactenos/jujuy.jpg" alt="Card image cap">
+                                    <div class="card-body" id="card">
+                                        <h5 class="card-title text-dark">Sucursal San salvador de Jujuy, Jujuy, Argentina</h5>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="https://goo.gl/maps/yX4U5JscsFk4ECLE7"><i class="fas fa-map"></i></a>
+                                            </div>
+                                            <div class="col">
+                                                <a href="mailto:test@test.com"><i class="fas fa-envelope"></i></a>
+                                            </div>
+                                            <div class="col">
+                                                <a href="tel:+123456789"><i class="fas fa-phone"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

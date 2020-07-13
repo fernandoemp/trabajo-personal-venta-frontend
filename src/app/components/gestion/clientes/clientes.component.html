@@ -1,0 +1,381 @@
+<div class="bg-color-fondo pb-5 pt-3">
+    <div class="container register p-3 fadeInDown borde-sombra">
+        <div class="row justify-content-center">
+            <div class="col-md-3 col-xl-2 register-left mt-2 text-center mt-5 pt-2 mx-auto">
+                <p class="h4">Panel de Propietarios</p>
+                <img src="./../../../../assets/alta_usuario/logo_add_usuario.png" class="img-fluid" alt="usuario" />
+                <p class="h5">Usuario: {{loginService.userLogueadoDisplay}}</p>
+                <p class="h5">Perfil: {{loginService.userPerfil}}</p>
+            </div>
+
+            <div class="col-md-9 col-xl-10 register-right">
+                <div class="row justify-content-end">
+                    <div class="col-auto">
+                        <ul class="nav nav-tabs nav-justified mt-2" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Registro</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Manage</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <h2 class="register-heading mt-2 pt-4 text-center">Registro de Propietarios</h2>
+                        <form #registropropietario="ngForm" autocomplete="off" class="row register-form mt-3 justify-content-center" (ngSubmit)="onSubmit(registropropietario)" method="POST">
+                            <div class="col-md-8 col-lg-7 col-xl-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="dni" name="dni" maxlength="9" minlength="7" oninput="this.value=this.value.replace(/[^0-9]/g,'');" required #dni="ngModel" placeholder="D.N.I *" [(ngModel)]="propietario.dni" [ngClass]="{ 'is-invalid':  dni.invalid && (dni.dirty || dni.touched) }"
+                                    />
+                                    <div *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="invalid-feedback strong col-auto">
+                                        <div *ngIf="dni.errors.required">
+                                            Ingrese el dni de el propietario sin puntos
+                                        </div>
+                                        <div *ngIf="dni.errors.minlength">
+                                            El dni debe tener al menos 7 digitos
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input id="apellido" class="form-control" type="text" oninput="this.value=this.value.replace(/[^a-zA-z ]/g,'');" required #apellido="ngModel" placeholder="Apellido" [(ngModel)]="propietario.apellido" name="apellido" [ngClass]="{ 'is-invalid':  apellido.invalid && (apellido.dirty || apellido.touched) }"
+                                    />
+                                    <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="invalid-feedback strong col-auto">
+                                        <div *ngIf="apellido.errors.required">
+                                            Ingrese el apellido del propietario
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="nombres" name="nombres" required oninput="this.value=this.value.replace(/[^a-zA-z ]/g,'');" #nombres="ngModel" placeholder="Nombres *" [(ngModel)]="propietario.nombres" [ngClass]="{ 'is-invalid':  nombres.invalid && (nombres.dirty || nombres.touched) }"
+                                    />
+                                    <div *ngIf="nombres.invalid && (nombres.dirty || nombres.touched)" class="invalid-feedback strong col-auto">
+                                        <div *ngIf="nombres.errors.required">
+                                            Ingrese el nombre de el propietario
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input id="email" class="form-control" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" type="email" required #email="ngModel" placeholder="E-MAIL" [(ngModel)]="propietario.email" name="email" [ngClass]="{ 'is-invalid':  email.invalid && (email.dirty || email.touched) }"
+                                    />
+                                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback strong col-auto">
+                                        <div *ngIf="email.errors.required">
+                                            Ingrese un email
+                                        </div>
+                                        <div *ngIf="email.errors.pattern">
+                                            Ingrese un email válido
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="telefono" minlength="7" maxlength="10" name="telefono" oninput="this.value=this.value.replace(/[^0-9]/g,'');" required #telefono="ngModel" placeholder="Telefono *" [(ngModel)]="propietario.telefono" [ngClass]="{ 'is-invalid':  telefono.invalid && (telefono.dirty || telefono.touched) }"
+                                    />
+                                    <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="invalid-feedback strong col-auto">
+                                        <div *ngIf="telefono.errors.required">
+                                            Ingrese el telefono de el propietario
+                                        </div>
+                                        <div *ngIf="telefono.errors.minlength">
+                                            El número debe tener al menos 7 digitos
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row justify-content-center mt-3 efectoScale">
+                                    <input type="submit" class="btn btn-lg boton-personalizado" [disabled]="!registropropietario.valid" (click)="registrarPropietario()" value="Registrar" />
+                                    <input type="reset" class="btn btn-lg boton-personalizado mr-2" (click)="limpiarCampos()" value="Cancelar" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade show row justify-content-center mr-1 ml-md-0 mr-md-2 pb-0 mb-0" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <form class="col-auto mt-4 form-inline">
+                            <input type="text" placeholder="DNI" class="form-control" style="width: 40%;" name="search" [(ngModel)]="busqueda">
+                            <button *ngIf="loginService.userPerfil == 'Administrador'" title="VER USUARIOS BORRADOS" type="submit" class="btn botonSmall" (click)="getPropietariosBorrados(); mostrarBorrados= true"><i class="fas fa-trash-alt"></i></button>
+                            <button *ngIf="loginService.userPerfil == 'Administrador'" class="btn botonSmall m-1" title="RECARGAR USUARIOS" (click)="getPropietarios(); mostrarBorrados = false"><i class="fas fa-redo-alt"></i></button>
+                            <!-- imprimir --><button type="button" title="PRINT" class="btn btn-outline-info m-2" (click)="imprimirJson()"><i class="fas fa-print"></i> Imprimir Info</button>
+                        </form>
+
+
+
+                        <table class="table table-responsive table-striped ml-3" [mfData]="propietarios" #mf="mfDataTable" [mfRowsOnPage]="5">
+                            <thead class="tabla-encabezado tituloTabla text-light p-2">
+                                <tr class="h6 text-center">
+                                    <th scope="col-auto">
+                                        <mfDefaultSorter by="dni">D.N.I</mfDefaultSorter>
+                                    </th>
+                                    <th scope="col-auto">
+                                        <mfDefaultSorter by="apellido">Apellido</mfDefaultSorter>
+                                    </th>
+                                    <th scope="col-auto">
+                                        <mfDefaultSorter by="nombres">Nombres</mfDefaultSorter>
+                                    </th>
+                                    <th scope="col-auto">
+                                        <mfDefaultSorter by="nombres">E-MAIL</mfDefaultSorter>
+                                    </th>
+                                    <th scope="col-auto">
+                                        <mfDefaultSorter by="nombres">Telefono</mfDefaultSorter>
+                                    </th>
+                                    <th scope="col-auto">
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let propietario of mf.data | filterDni: busqueda" [ngClass]="{'propietario-borrado': propietario.borrado == true}">
+                                    <td scope="row">{{ propietario.dni | dni }}</td>
+                                    <td>{{ propietario.apellido | titlecase }}</td>
+                                    <td>{{ propietario.nombres | titlecase }}</td>
+                                    <td>{{ propietario.email }}</td>
+                                    <td>{{ propietario.telefono }}</td>
+                                    <td>
+                                        <div class="hover px-3 py-2">
+                                            <span>Acciones</span>
+                                            <a class="social-link  px-2" (click)="verModal(modificar, propietario)">
+                                                <i class="far fa-edit"></i>
+                                            </a>
+                                            <a *ngIf="propietario.borrado == false" class="social-link px-2" (click)="verModal(borrar, propietario)">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                            <a *ngIf="loginService.userPerfil == 'Administrador' && propietario.borrado == true" class="social-link px-2" (click)="verModal(restaurar, propietario)">
+                                                <i class="fas fa-trash-restore-alt"></i>
+                                            </a>
+                                            <!-- Dado que si se borra un propietario, el contrato pierde informacion se desabilita tal opcion.
+                                          <a *ngIf="loginService.userPerfil == 'Administrador' && propietario.borrado == true" class="social-link px-2" (click)="verModal(borrardefinitivamente, propietario)">
+                                              <i class="fas fa-user-minus"></i>
+                                          </a>-->
+                                            <a class="social-link px-2" (click)="getUsuarioByEmail(propietario)">
+                                                <i class="fas fa-search"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">
+                                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!--MODALS-->
+                    <div class="col-10">
+                        <ng-template #modificar let-modal class="modal">
+                            <div class="modal-content fadeIn">
+                                <div class="modal-header text-center encabezado-modal text-light ">
+                                    <h4 class="modal-title w-100 font-weight-bold">Modificar Propietario?</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="limpiarCampos(); modal.close()">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="dni"><i class="far fa-id-card"></i> D.N.I</label>
+                                        <input type="text" class="form-control validate" id="dni" name="dni" minlength="7" oninput="this.value=this.value.replace(/[^0-9]/g,'');" required #dni="ngModel" placeholder="D.N.I *" [(ngModel)]="propietario.dni" [ngClass]="{ 'is-invalid':  dni.invalid && (dni.dirty || dni.touched) }"
+                                        />
+                                        <div *ngIf="dni.invalid && (dni.dirty || dni.touched)" class="invalid-feedback strong col-auto">
+                                            <div *ngIf="dni.errors.required">
+                                                Ingrese el dni de el propietario sin puntos
+                                            </div>
+                                            <div *ngIf="dni.errors.minlength">
+                                                El dni debe tener al menos 7 digitos
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="apellido"><i class="fas fa-user"></i> Apellido</label>
+                                        <input id="apellido" class="form-control" required oninput="this.value=this.value.replace(/[^a-zA-z ]/g,'');" type="text" required #apellido="ngModel" placeholder="apellido" [(ngModel)]="propietario.apellido" name="apellido" [ngClass]="{ 'is-invalid':  apellido.invalid && (apellido.dirty || apellido.touched) }"
+                                        />
+                                        <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="invalid-feedback strong col-auto">
+                                            <div *ngIf="apellido.errors.required">
+                                                Ingrese el apellido del propietario
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="nombres"><i class="fas fa-user prefix grey-text"></i>Nombres</label>
+                                        <input type="text" class="form-control" id="nombres" name="nombres" required required oninput="this.value=this.value.replace(/[^a-zA-z ]/g,'');" #nombres="ngModel" placeholder="Nombres *" [(ngModel)]="propietario.nombres" [ngClass]="{ 'is-invalid':  nombres.invalid && (nombres.dirty || nombres.touched) }"
+                                        />
+                                        <div *ngIf="nombres.invalid && (nombres.dirty || nombres.touched)" class="invalid-feedback strong col-auto">
+                                            <div *ngIf="nombres.errors.required">
+                                                Ingrese el nombre de el propietario
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="email"><i class="fas fa-at"></i> E-MAIL</label>
+                                        <output type="text" id="orangeForm-name" name="email" class="form-control validate">{{propietario.email}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="telefono"><i class="fas fa-mobile-alt"></i> Telefono</label>
+                                        <input type="number" class="form-control" id="telefono" minlength="7" name="telefono" oninput="this.value=this.value.replace(/[^0-9]/g,'');" required #telefono="ngModel" placeholder="Telefono *" [(ngModel)]="propietario.telefono" [ngClass]="{ 'is-invalid':  telefono.invalid && (telefono.dirty || telefono.touched) }"
+                                        />
+                                        <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="invalid-feedback strong col-auto">
+                                            <div *ngIf="telefono.errors.required">
+                                                Ingrese el telefono de el propietario
+                                            </div>
+                                            <div *ngIf="dni.errors.minlength">
+                                                El número debe tener al menos 7 digitos
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button class="btn btn-dark" [disabled]="!registropropietario.valid" (click)="updatePropietario(); modal.close()">Modificar</button>
+                                    <button class="btn btn-dark" (click)="limpiarCampos(); modal.close()">Cancelar</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-10">
+                        <ng-template #borrar let-modal class="modal">
+                            <div class="modal-content fadeIn">
+                                <div class="modal-header text-center encabezado-modal">
+                                    <h4 class="modal-title w-100 font-weight-bold text-light">Borrar Propietario?</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="limpiarCampos(); modal.close()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="dni"><i class="far fa-id-card"></i> D.N.I</label>
+                                        <output type="number" id="dni" name="dni" class="form-control validate">{{propietario.dni | dni}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="apellido"><i class="fas fa-user"></i> Apellido</label>
+                                        <output type="text" id="apellido" name="apellido" class="form-control validate">{{propietario.apellido}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="nombres"><i class="fas fa-user"></i> Nombres</label>
+                                        <output type="text" id="nombres" name="nombres" class="form-control validate">{{propietario.nombres}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="email"><i class="fas fa-at"></i> E-MAIL</label>
+                                        <output type="text" id="email" class="form-control validate">{{propietario.email}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="telefono"><i class="fas fa-mobile-alt"></i> Telefono</label>
+                                        <output type="text" id="telefono" name="telefono" class="form-control validate">{{propietario.telefono}}</output>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button class="btn btn-dark" (click)="deletePropietario(); modal.close()">Borrar</button>
+                                    <button class="btn btn-dark" (click)="limpiarCampos(); modal.close()">Cancelar</button>
+                                </div>
+
+                            </div>
+                        </ng-template>
+                    </div>
+
+
+                    <div class="col-10">
+                        <ng-template #borrardefinitivamente let-modal class="modal">
+                            <div class="modal-content fadeIn">
+                                <div class="modal-header text-center encabezado-modal text-light">
+                                    <p class="modal-title w-100 font-weight-bold text-danger h3">Borrar Propietario Definitivamente?</p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="limpiarCampos(); modal.close()">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <p class="modal-title w-100 font-weight-bold text-danger h5">Tambien se borrará su cuenta en caso de existir</p>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="dni"><i class="far fa-id-card"></i> D.N.I</label>
+                                        <output type="number" id="dni" name="dni" class="form-control validate">{{propietario.dni | dni}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="apellido"><i class="fas fa-user"></i> Apellido</label>
+                                        <output type="text" id="apellido" name="apellido" class="form-control validate">{{propietario.apellido}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="nombres"><i class="fas fa-user"></i> Nombres</label>
+                                        <output type="text" id="nombres" name="nombres" class="form-control validate">{{propietario.nombres}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="email"><i class="fas fa-at"></i> E-MAIL</label>
+                                        <output type="text" id="email" class="form-control validate">{{propietario.email}}</output>
+                                    </div>
+                                    <div class="md-form mb-2">
+                                        <label data-error="wrong" data-success="right" for="telefono"><i class="fas fa-mobile-alt"></i> Telefono</label>
+                                        <output type="text" id="telefono" name="telefono" class="form-control validate">{{propietario.telefono}}</output>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button class="btn btn-danger" (click)="deletePropietarioDefinitivamente(); modal.close()">ELIMINAR</button>
+                                        <button class="btn btn-dark" (click)="limpiarCampos(); modal.close()">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-10">
+                        <ng-template #restaurar let-modal class="modal">
+                            <div class="modal-content fadeIn">
+                                <div class="modal-header text-center encabezado-modal text-light">
+                                    <h4 class="modal-title w-100 font-weight-bold">Restaurar Usuario?</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="limpiarCampos(); modal.close()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <div class="md-form mb-5">
+                                        <label data-error="wrong" data-success="right" for="dni"><i class="far fa-id-card"></i> D.N.I</label>
+                                        <output type="number" id="dni" name="dni" class="form-control validate">{{propietario.dni | dni}}</output>
+                                    </div>
+                                    <div class="md-form mb-4">
+                                        <label data-error="wrong" data-success="right" for="apellido"><i class="fas fa-user"></i> Apellido</label>
+                                        <output type="text" id="apellido" name="apellido" class="form-control validate">{{propietario.apellido}}</output>
+                                    </div>
+                                    <div class="md-form mb-5">
+                                        <label data-error="wrong" data-success="right" for="nombres"><i class="fas fa-user"></i> Nombres</label>
+                                        <output type="text" id="nombres" name="nombres" class="form-control validate">{{propietario.nombres}}</output>
+                                    </div>
+                                    <div class="md-form mb-5">
+                                        <label data-error="wrong" data-success="right" for="email"><i class="fas fa-at"></i> E-MAIL</label>
+                                        <output type="text" id="email" class="form-control validate">{{propietario.email}}</output>
+                                    </div>
+                                    <div class="md-form mb-5">
+                                        <label data-error="wrong" data-success="right" for="telefono"><i class="fas fa-mobile-alt"></i> Telefono</label>
+                                        <output type="text" id="telefono" name="telefono" class="form-control validate">{{propietario.telefono}}</output>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button class="btn btn-dark" (click)="restaurarPropietario(); modal.close()">Restaurar</button>
+                                    <button class="btn btn-dark" (click)="limpiarCampos(); modal.close()">Cancelar</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="col-10">
+                        <ng-template #datosusuario let-modal class="modal">
+                            <div class="modal-content fadeIn">
+                                <div class="modal-header text-center encabezado-modal text-light">
+                                    <h4 class="modal-title w-100 font-weight-bold">Cuenta del Propietario</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="limpiarCampos(); modal.close()">
+                             <span aria-hidden="true">&times;</span>
+                            </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <div class="md-form mb-5">
+                                        <label data-error="wrong" data-success="right" for="orangeForm-name"><i class="fas fa-user prefix grey-text"></i> Usuario</label>
+                                        <output type="text" id="orangeForm-name" class="form-control validate">{{usuario.usuario}}</output>
+                                    </div>
+                                    <div class="md-form mb-4">
+                                        <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-user-cog"></i> Perfil</label>
+                                        <output type="text" id="orangeForm-name" class="form-control validate">{{usuario.perfil}}</output>
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button class="btn btn-dark" (click)="modal.close()">Cerrar</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

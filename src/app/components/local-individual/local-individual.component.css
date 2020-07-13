@@ -1,0 +1,34 @@
+.f_social_icon a {
+    width: 46px;
+    height: 46px;
+    font-size: 2em;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 45px;
+    color: #858da8;
+    display: inline-block;
+    background: #ebeef5;
+    text-align: center;
+    -webkit-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+  }
+
+  .colorFondo{
+    /* background: linear-gradient(to right top,#d2ebf0, #f2fcfe); */
+   /*  background:
+    linear-gradient(135deg, #f2f8fd 22px, #eef6ff 22px, #eaf3fc 24px, transparent 24px, transparent 67px, #e4ecf5 67px, #e2edf8 69px, transparent 69px),
+    linear-gradient(225deg, #edf2f7 22px, #eef6ff 22px, #eef7ff 24px, transparent 24px, transparent 67px, #e1ecf7 67px, #e9f1f8 69px, transparent 69px)0 64px;
+    background-color:#f0f5fa;
+    background-size: 64px 128px; */
+      background: rgb(225, 234, 241);
+      /* Old browsers */
+      background: -moz-linear-gradient(top, rgb(220, 232, 241) 0%, rgb(211, 222, 228) 100%);
+      /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, rgb(220, 231, 240) 0%, rgb(202, 212, 216) 100%);
+      /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, rgb(219, 230, 238) 0%, rgb(202, 217, 224) 100%);
+      /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+
+ 

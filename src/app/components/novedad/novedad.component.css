@@ -1,0 +1,50 @@
+.card-circle {
+    border-radius: 40px;
+    transition: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.btn-personalizado {
+    color: black;
+}
+
+.btn-personalizado :hover {
+    background-color: black;
+}
+
+.tamaño-imagen {
+    width: 4rem;
+    height: 4rem;
+}
+
+.bg-color-fondo {
+    background: rgb(206, 220, 231);
+    /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(206, 220, 231, 1) 0%, rgba(89, 106, 114, 1) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(206, 220, 231, 1) 0%, rgba(89, 106, 114, 1) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(206, 220, 231, 1) 0%, rgba(89, 106, 114, 1) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.bg-categorias {
+    background: rgb(242, 245, 246);
+    /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(242, 245, 246, 1) 0%, rgba(227, 234, 237, 1) 37%, rgba(200, 215, 220, 1) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(242, 245, 246, 1) 0%, rgba(227, 234, 237, 1) 37%, rgba(200, 215, 220, 1) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(242, 245, 246, 1) 0%, rgba(227, 234, 237, 1) 37%, rgba(200, 215, 220, 1) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.bg-titulo-novedad {
+    background: rgb(242, 245, 246);
+    /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(242, 245, 246, 1) 0%, rgba(227, 234, 237, 1) 37%, rgba(200, 215, 220, 1) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(242, 245, 246, 1) 0%, rgba(227, 234, 237, 1) 37%, rgba(200, 215, 220, 1) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(242, 245, 246, 1) 0%, rgba(227, 234, 237, 1) 37%, rgba(200, 215, 220, 1) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}

@@ -1,0 +1,384 @@
+<div class="colorFondo">
+  <div class="container">
+    <!-- formulario de contratos -->
+    <div class="row justify-content-center pt-4">
+        <div class="col-12 col-lg-10 sombra mb-3 bg-white">
+            <div class="row" @enterState>
+                <div class="col-12 ">
+                    <div class="h3 mb-0 p-3 titulo-tabla2 text-white bg-success"> Gestion de <strong>Contratos</strong></div>
+                </div>
+                <div class="d-none d-md-block col-md-5 mt-0">
+                  <img src="../../../assets/local/contrato.jpg" width="100%" height="auto" class="img-fluid" alt="formContrato">
+                </div>
+                <div class="col-12 col-md-7">
+                    <form class="p-3" #formContrato="ngForm">
+                        <div class="form-group row">
+                          <label for="prop" class="col-3 col-form-label">Propietario:</label>
+                          <div class="col-9">
+                            <select class="form-control" name="prop" #prop="ngModel" id="prop" [(ngModel)]="contrato.propietario" required>
+                              <option  *ngFor="let item of propietarios" [ngValue]="item" >{{item.dni}} , {{item.apellido}}</option>
+                            </select>
+                          </div>
+                          <div *ngIf="prop.invalid && (prop.dirty || prop.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                            <div *ngIf="prop.errors.required">
+                              <i class="fas fa-exclamation-circle"></i> Propietario es requerido.
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                          <label for="localess" class="col-4 col-form-label">Locales:</label>
+                          <div class="col-12">
+
+                            <div id="accordion">
+                              <div class="card">
+                                <div class="card-header" id="headingOne">
+                                  <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                      Mostrar Lista de Locales
+                                    </button>
+                                  </h5>
+                                  
+                                </div>
+                            
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                  
+                                  <div class="row p-2">
+                                    <div class="col-12">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                        <input type="text" class="form-control" placeholder="buscar por nombre..." name="filterLocales" [(ngModel)]="filterLocales">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                        </div>
+                                        </div>
+                                    </div>  
+                                  </div>
+
+                                  <div class="card-body">
+                                    <div class="table-responsive">
+                                      <table class="table table-striped" id="table2">
+                                        <thead>
+                                          <tr class="text-center">
+                                            <th scope="col"> <i class="far fa-plus-square"></i> </th>
+                                            <th scope="col"> Nombre</th>
+                                            <th scope="col"> Precio</th>
+                                            <th scope="col"> Superficie</th>
+                                            <th scope="col"> Descripci&oacute;n</th>
+          
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr *ngFor="let item of locales | filtro:filterLocales ">
+                                            <td class="text-center"> 
+                                              <button type="button" title="AGREGAR" class="btn mr-1 mb-1 agrandado" (click)="guardarLocalEnArrayTemp(item)" ><i class="far fa-plus-square text-success "></i></button>    
+                                            </td> 
+                                            <td class="text-center"> {{item.nombre | uppercase}} </td>  
+                                            <td class="text-right"> $ {{item.precio |  number:'':'es'}} </td>                                       
+                                            <td class="text-right "> {{item.superficie}} m² </td>
+                                            <td class="textoCortado"> {{item.descripcion}} </td>
+                                               
+                                          </tr>
+                                        </tbody>
+                                      
+                                    </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>                           
+                            </div>
+                          </div>
+                          <!-- locales agregados temp -->
+                          <div class="col-12 mt-2">
+                            <div id="accordion">
+                              <div class="card">
+                                <div class="card-header" id="headingOne2">
+                                  <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTemp" aria-expanded="true" aria-controls="collapseOne">
+                                      Locales Agregados
+                                    </button>
+                                  </h5>
+                                </div>
+                            
+                                <div id="collapseTemp" class="collapse " aria-labelledby="headingOne2" data-parent="#accordion">
+                                  <div class="card-body">
+                                    <div class="table-responsive">
+                                      <table class="table table-striped" id="table">
+                                        <thead>
+                                          <tr class="text-center">
+                                            <th scope="col"> <i class="fas fa-minus-square"></i> </th>
+                                            
+                                            <th scope="col"> Nombre</th>
+                                            <th scope="col"> Precio</th>
+                                            <th scope="col"> Superficie</th>
+                                            <th scope="col"> Descripci&oacute;n</th>
+                                            
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr *ngFor="let lc of localesTemporales; index as i">
+                                            <td class="text-center"> 
+                                              <button type="button" title="QUITAR" class="btn mr-1 mb-1 agrandado" (click)="eliminarLocalDelArrayTemp(i)" ><i class="fas fa-minus-square text-danger"></i></button>    
+                                            </td> 
+                                            <td class="text-center">{{lc.nombre | uppercase}} </td> 
+                                            <td class="text-right"> $ {{lc.precio |  number:'':'es'}} </td>                                        
+                                            <td class="text-right "> {{lc.superficie}} m² </td>
+                                            <td class="textoCortado"> {{lc.descripcion}} </td>
+                                               
+                                          </tr>
+                                        </tbody>
+
+                                    </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>                           
+                            </div>
+                          </div>
+                          <!-- 
+                          <div *ngIf="localess.invalid && (localess.dirty || localess.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                            <div *ngIf="localess.errors.required">
+                              *Debe exitir al menos un local en el contrato.
+                            </div>
+                          </div> -->
+                        </div>
+
+                          <div class="form-group row">
+                            <label for="custome" class="col-3 col-form-label">Costo Del Alquiler:</label>
+                            <div class="col-9">
+                              <input type="number" name="custom" min="1" max="99999999" oninput="validity.valid||(value='')" class="form-control" id="custome" #custm="ngModel" [(ngModel)]="precioLocal" required disabled>
+                            </div>
+                            <div *ngIf="custm.invalid && (custm.dirty || custm.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                              <div *ngIf="custm.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> Costo es requerido.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="dur" class="col-3 col-form-label">Duraci&oacute;n:</label>
+                            <div class="col-9">
+                              <input type="number" name="dur" min="1" max="36" oninput="validity.valid||(value='')" class="form-control" id="dur" #dur="ngModel" [(ngModel)]="contrato.duracion" (ngModelChange)="actualizarPrecio()" placeholder="en meses" required>
+                            </div>
+                            <div *ngIf="dur.invalid && (dur.dirty || dur.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                              <div *ngIf="dur.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> Duraci&oacute;n es requerida.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="cerr" class="col-3 col-form-label">Cerrado:</label>
+                            <div class="col-9">
+                                <label class="col-sm-12 col-md-4"><input  type="radio" name="opcion" [(ngModel)]="contrato.cerrado"  [value]="true" required> SI</label>
+                                <label class="col-sm-12 col-md-4"><input  type="radio" name="opcion" [(ngModel)]="contrato.cerrado" [value]="false" required> NO</label>   
+                            </div>
+                            
+                        </div>
+
+                        <div class="row form-group"> 
+                            <label for="descrip" class="col-12 col-md-4">Descripci&oacute;n: </label>
+                            <div class="col-12 col-md-8 text-right"> Te quedan: {{tamTexto}} letras. </div> 
+                        </div> 
+                          <div class="row form-group"> 
+                            <textarea class="form-control mr-3 ml-3" id="descrip" placeholder="Ingresa la descripcion con un minimo de 5 caracteres..." name="descrip" #descrip="ngModel" [(ngModel)]="contrato.descripcion" minlength="5" rows="3" name="txtTexto" [maxlength]="tamMaxTexto" (ngModelChange)="cambiarTamTexto()" required >  
+                            </textarea>
+                            <div *ngIf="descrip.invalid && (descrip.dirty || descrip.touched)" class=" mt-1 text-danger col-sm-12">
+                              <div *ngIf="descrip.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> La descripci&oacute;n es requerida.
+                              </div>
+                              <div *ngIf="descrip.errors.minlength">
+                                <i class="fas fa-exclamation-circle"></i> La descripci&oacute;n debe tener al menos 5 caracteres.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                              <div class="col-12 p-2">
+                                <button *ngIf="btnModificar" class="btn btn_get btn_get_two m-2" type="submit" (click)="modificarContrato(true); formContrato.reset()" [disabled]="!(formContrato.form.valid && localesTemporales.length > 0)">MODIFICAR</button>
+                                <button *ngIf="btnGuardar" class="btn btn_get btn_get_two m-2" type="submit" (click)="guardarContrato(); formContrato.reset()" [disabled]="!(formContrato.form.valid && localesTemporales.length > 0 )">GUARDAR</button>
+                                <button *ngIf="btnGuardar" class="btn btn_get btn_get_two m-2" type="submit" (click)="limpiarContrato(); formContrato.reset()" >LIMPIAR</button>
+                                <button *ngIf="btnModificar" class="btn btn_get btn_get_two m-2" (click)="cancelarModificacion(); formContrato.reset()" type="submit">CANCELAR</button>
+                              </div>
+                          </div>
+                    </form>
+                </div>
+               
+            </div>
+            
+        </div>
+    </div>
+    <!-- lista de los contratos -->
+
+    <div class="row">
+      <div class="col-12 titulo-tabla2">
+        <div class="h3 text-white p-3">HISTORIAL DE CONTRATOS</div>
+      </div>
+    </div>
+
+     <!-- imprimir -->
+     <div class="row pb-3 pt-3 bg-white" >
+      <div class="col-12 text-right">
+        <button type="button" title="PRINT" class="btn btn_get btn_get_two m-2" (click)="imprimirJson()" ><i class="fas fa-print"></i> Imprimir Info</button>    
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-12 bg-white">
+          <div class="table-responsive p-3">
+              <!-- <div class="titulo-tabla row p-3 text-white mb-2">
+                  <div class="col-12 col-md-7 h3">Listado de <strong>Locales </strong> </div>
+                  <div class="col-12 col-md-5 h4">Buscar <input class="h4 ml-2" type="text" placeholder="buscar local"></div>
+              </div> -->
+              <table class="table table-striped" id="table-local" [mfData]="contratos" #mf="mfDataTable" [mfRowsOnPage]="5">
+                  <thead>
+                    <tr class="text-center">
+                      <th style="width: 20%"><mfDefaultSorter by="propietario.dni">Propietario</mfDefaultSorter></th>
+                      <th style="width: 15%"><mfDefaultSorter by="estado">Estado</mfDefaultSorter></th>
+                      <th style="width: 30%"><mfDefaultSorter by="fecha">Fecha Acuerdo</mfDefaultSorter></th>
+                      <th style="width: 5%"><mfDefaultSorter by="duracion">Duraci&oacute;n</mfDefaultSorter></th>
+                      <th style="width: 5%"><mfDefaultSorter by="costoTotalAlq">Costo Alquiler</mfDefaultSorter></th>
+                      <th scope="col"> Locales</th>
+                      <th style="width: 5%"><mfDefaultSorter by="cerrado">Cerrado</mfDefaultSorter></th>
+                      <th style="width: 20%"><mfDefaultSorter by="descripcion">Descripci&oacute;n Contrato</mfDefaultSorter></th>
+                      <th style="width: 15%"> Acciones:</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of mf.data ">
+                      <td class=""> {{item.propietario.dni}}, {{item.propietario.apellido}} </td>
+                      <td class=""> {{item.estado}} </td>
+                      <td class=""> {{item.fecha | date:"dd-MM-yyyy"}} </td>
+                      <td class="text-right"> {{item.duracion}} </td>
+                      <td class="text-right"> $ {{item.costoTotalAlq | number:'':'es'}} </td>
+                      <td class="text-center"> <button class="btn verImagenes" data-toggle="modal" (click)="cargarLocalModalMostrar(item)" data-target="#verLocales">VER LOCALES</button> </td>
+                      <td class="text-center"> {{item.cerrado == 1 ? 'SI' : 'NO'}} </td>
+                      <td class="textoCortado"> {{item.descripcion}} </td>
+                      <td class="text-center"> 
+                        <button class="btn verImagenes m-2 agrandado" style="width: 100%;" (click)="elegirContrato(item)" [disabled]="item.cerrado || item.estado == 'NO_VIGENTE' " >MODIFICAR</button>
+                        <button class="btn btn-danger m-2 agrandado"  style="width: 100%;" (click)="cargarContratoBorrar(item)" data-toggle="modal" data-target="#contratoBorrar" [disabled]="item.estado == 'NO_VIGENTE' || btnModificar" >ANULAR</button>
+                      </td>     
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                      <tr>
+                        <td colspan="8">
+                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                      </tr>
+                    </tfoot>
+              </table>
+          </div>
+         
+      </div>
+  </div>
+
+
+   <!--  <div class="row">
+      <div class="col-12">
+          <button class="btn btn-secondary m-2"> Ver Contratos No Vigentes</button>
+          <button class="btn btn-secondary m-2"> Ver Contratos Vigentes</button>
+          <button class="btn btn-secondary m-2"> Ultimos 30 dias</button>
+      </div>  
+  </div> -->
+  <div class="row">
+    <div class="col-12 colorNo">.</div>
+  </div>
+    
+
+</div>   
+
+
+</div>
+
+<!-- modal confirmacion borrar contrato -->
+<div class="modal fade" id="contratoBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog row" role="document">
+    <div class="modal-content col-12 text-center">
+      <div class="modal-header row">
+        <button type="button" class="close mr-0" data-dismiss="modal" aria-hidden="true">×</button>
+        <div class="col-12">
+          <i class="fas fa-times cruz-grande "></i>
+        </div>						
+        
+				<h4 class="col-12 modal-title w-100 ">Esta Seguro que Desea Anular este contrato?</h4>	
+        
+      </div>
+      <div class="modal-body text-center row">
+        <div class="col-12">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-4">
+              <strong> Fecha: </strong>
+            </div>
+            <div class="col-12 col-md-8 text-center">
+              {{contratoBorrar.fecha | date:"dd-MM-yyyy"}}
+            </div>
+            <div class="col-12 col-md-4">
+              <strong> Propietario: </strong>
+            </div>
+            <div class="col-12 col-md-8 text-center">
+              {{propietarioModal.dni}}, {{propietarioModal.apellido}}
+            </div>
+            <div class="col-12 col-md-4">
+              <strong> Descripci&oacute;n: </strong>
+            </div>
+            <div class="col-12 col-md-8 text-center textoCortado">
+              {{contratoBorrar.descripcion}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer row text-center justify-content-center">
+        <div class="col-12">
+          <button type="button" class="btn btn-secondary m-2"  data-dismiss="modal">CANCELAR</button>
+          <button type="button" class="btn btn-danger m-2"  data-dismiss="modal" (click)="borrarContrato()">ACEPTAR</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal ver locales -->
+<div class="modal fade" id="verLocales" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog row" role="document">
+    <div class="modal-content col-12 text-center">
+      <div class="modal-header row">
+        <button type="button" class="close mr-0" data-dismiss="modal" aria-hidden="true">×</button>
+
+				<h4 class="col-12 modal-title w-100 mt-4">Informaci&oacute;n sobre Locales</h4>	
+        
+      </div>
+      <div class="modal-body text-center row">
+        <div class="col-12">
+          <div class="table-responsive">
+          <table class="table table-striped" id="table">
+            <thead>
+              <tr class="text-center">
+                <th scope="col"> Nombre</th>
+                <th scope="col"> Superficie</th>
+                <th scope="col"> Costomes</th>
+                <th scope="col"> Descripci&oacute;n</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let lc of localesTemporalesModal; index as i">
+                <td class="text-right"> {{lc.nombre | uppercase}}</td>
+                <td class="text-right"> {{lc.superficie}} m²</td>                                        
+                <td class="text-right"> {{lc.costomes}} </td>
+                <td class="textoCortado"> {{lc.descripcion}} </td>
+                 
+              </tr>
+            </tbody>
+        </table>
+        </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer row text-center justify-content-center">
+        <div class="col-12">
+          <button type="button" class="btn btn-secondary m-2"  data-dismiss="modal">CERRAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

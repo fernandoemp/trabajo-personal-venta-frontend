@@ -1,0 +1,75 @@
+
+
+.colorFondo{
+  /* background: linear-gradient(to right top,#d2ebf0, #f2fcfe); */
+ /*  background:
+  linear-gradient(135deg, #f2f8fd 22px, #eef6ff 22px, #eaf3fc 24px, transparent 24px, transparent 67px, #e4ecf5 67px, #e2edf8 69px, transparent 69px),
+  linear-gradient(225deg, #edf2f7 22px, #eef6ff 22px, #eef7ff 24px, transparent 24px, transparent 67px, #e1ecf7 67px, #e9f1f8 69px, transparent 69px)0 64px;
+  background-color:#f0f5fa;
+  background-size: 64px 128px; */
+    background: rgb(225, 236, 245);
+    /* Old browsers */
+    background: -moz-linear-gradient(top, rgb(220, 232, 241) 0%, rgb(193, 207, 214) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgb(220, 231, 240) 0%, rgb(198, 212, 218) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgb(219, 230, 238) 0%, rgb(171, 190, 199) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.card img {
+  transition: all 1.5s ease;
+}
+
+.card img:hover {
+  transform: scale(1.09);
+}
+
+
+/** cabecara **/
+.container1 {
+    width: 100%;
+    height: 100vh;
+    background-image: url('../../../assets/home/nosotros.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: auto;
+    background-attachment: fixed;
+  
+  }
+
+  .header-section {
+    width: 100%;
+    height: inherit;
+    color: white;
+    text-align: center;
+    position: relative;
+  
+  }
+
+  .center-div {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -85%);
+    -ms-transform: translate(-50%, -85%);
+    -webkit-transform: translate(-50%, -85%);
+  }
+  
+
+  .opacidad{
+      opacity: .4;
+  }
+  .opacidad:hover{
+      opacity: 1;
+      transition: .5s ease;
+  }
+
+  .sombra{
+    font-size: 50px;
+    -webkit-text-stroke: .2px rgb(100, 100, 100);
+    font-weight: bold;
+    color: black;
+  }

@@ -1,0 +1,79 @@
+<div class="colorFondo">
+    <div class="container-fluid">
+        <div class="row p-3" *ngIf="local != null">
+            <div class="col-12">
+                <strong class="h3 font-weight-bold"> INFORMACION SOBRE EL LOCAL {{local.nombre}}</strong> 
+            </div>
+    
+        </div>
+        
+        <div class="row p-3" *ngIf="local != null">
+            <div class="col-12 col-md-8">
+                <ngb-carousel class="mb-3" *ngIf="local.imagen" [showNavigationArrows]="true" [showNavigationIndicators]="true">
+                    <ng-template ngbSlide *ngFor="let image of local.imagen">
+                      <div class="picsum-img-wrapper">
+                        <img [src]="image" alt="Muestras slide" class="img-fluid" width="100%" height="auto">
+                      </div>
+                      <div class="carousel-caption">
+                        <h4>Muestras del local</h4>
+                      </div>
+                    </ng-template>
+                  </ngb-carousel>
+    
+                  <div class="mt-3"> Local Comercial</div>
+                  <div> <strong class="mb-1"> Precio por Mes: </strong> $ {{local.precio | number:'':'es'}} </div>
+                  <div> <strong class="mb-1"> Superficie: </strong> {{local.superficie}} m²</div>
+                  <div> <strong> Avenida Jose Hernandez Irigoyen 720 </strong> </div>
+                  
+                  <hr class="bg-secondary">
+                  <small class=""> <i class="fas fa-history mb-2"></i> publicado {{publicacion}} </small>
+
+                  <div> <strong>DESCRIPCION</strong> </div>
+                  <div> {{local.descripcion}}</div>
+                  <div class="text-center mt-3">Visitenos!!</div>
+                  <hr class="bg-secondary">
+                  <div> <strong>Clientes aprox: </strong> {{local.costomes}} </div>
+                  <div> <strong>Baños: </strong> {{local.banios}} </div>
+                  <hr class="bg-secondary">
+                  
+                  <div> <strong>Servicios: </strong></div>
+                  <div class="row">
+                    <div class="col-12 col-md-6" *ngFor="let item of local.servicios">
+                        <ul>
+                            <li>{{item}}</li>
+                        </ul>
+                    </div>
+                 </div>
+                  
+      
+                  <div class="row justify-content-center">
+                        <div class="col-8 col-md-2 f_social_icon m-4 text-center" >
+                             <a class="fas fa-sun  text-center"></a>
+                             <p class="text-center">Excelente Iluminaci&oacute;n </p> 
+                        </div>
+                        <div class="col-8 col-md-2 f_social_icon m-4 text-center">
+                            <a class="fas fa-toilet text-center"></a>
+                            <p class="text-center">Baños </p> 
+                       </div>
+                       <div class="col-8 col-md-2 f_social_icon m-4 text-center">
+                            <a  class="far fa-check-square text-center"></a>
+                           <p class="text-center"> Exceletes Condiciones</p>  
+                        </div>
+                    </div>
+            </div>
+            <div class="d-none d-md-block col-md-4 ">
+                <aside class=" card  align-self-start "> 
+                    <a href="https://www.eldon.com.ar/e-shop/remeras-de-hombre.html?p=2" target="_blank">
+                        <img src="../../../assets/local/pub2.png" class="img-fluid" alt="publicidad">
+                    </a>         
+                </aside> 
+            </div>
+            
+        </div>
+    
+    </div>
+    
+
+</div>
+
+

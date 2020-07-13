@@ -1,0 +1,338 @@
+<div class="colorFondo">
+  <div class="container">
+    <!-- formulario de locales -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-9 sombra p-0 bg-white mt-4">
+            <div class="row" @enterState>
+                <div class="col-12 ">
+                    <div class="h3 mb-0 p-3 titulo-tabla2 text-white"> Gestion de <strong>Locales</strong></div>
+                </div>
+                <div class="col-12 col-md-7">
+                    <form class="p-3" #formLocal="ngForm">
+                        <div class="form-group row">
+                          <label for="superficie" class="col-3 col-form-label">Superficie:</label>
+                          <div class="col-9">
+                            <input type="number" min="1" max="700" oninput="validity.valid||(value='')" name="superficie" class="form-control" id="superficie"  #superf="ngModel"
+                            [(ngModel)]="local.superficie" placeholder="30 m²" required>
+                          </div>
+                          <div *ngIf="superf.invalid && (superf.dirty || superf.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                            <div *ngIf="superf.errors.required">
+                              <i class="fas fa-exclamation-circle"></i> Superficie es requerida.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="imagen" class="col-3 col-form-label">Imagen:</label>
+                          <div class="col-9">
+
+                          <label for="imagen" class="subir">
+                            <i class="fas fa-cloud-upload-alt"></i> Subir archivo
+                          </label>
+                            <input type="file" name="imagen" class="form-control" id="imagen" 
+                            alife-file-to-base64 multiple (onFileChanged)="onFileChanges($event)" 
+                            accept="image/x-png,image/gif,image/jpeg" required
+                            style='display: none;' >
+                          </div>
+                          <!-- <div *ngIf="image.invalid && (image.dirty || image.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                            <div *ngIf="image.errors.required">
+                              *Imagen es requerida.
+                            </div>
+                          </div> -->
+                          <div class="col-5 col-md-3 m-2 card border-dark text-center" *ngFor="let item of arrayImagenesLocal; index as i">
+                            <img [src]="item" alt="img" class="img-fluid m-auto justify-content-center" width="70%" (click)="cargarImagenBorrar(i)"
+                            data-toggle="modal" data-target="#ampliarImagen">
+                          </div>
+                        </div>
+                        <!-- el alquilado no se puede editar desde este form logicamente -->
+                        <!-- <div class="form-group row">
+                            <label for="alquil" class="col-3 col-form-label">Alquilado:</label>
+                            <div class="col-9">
+                                <label class="col-sm-12 col-md-4"><input  type="radio" name="opcion" class="m-1" [(ngModel)]="local.alquilado"  [value]="true" required> SI</label>
+                                <label class="col-sm-12 col-md-4"><input  type="radio" name="opcion" class="m-1" [(ngModel)]="local.alquilado" [value]="false" required> NO</label>   
+                            </div>
+                            
+                        </div> -->
+                        
+                          <div class="form-group row">
+                            <label for="custome" class="col-3 col-form-label">Clientes Aprox:</label>
+                            <div class="col-9">
+                              <input type="number" name="custom" min="1" max="100" oninput="validity.valid||(value='')"  class="form-control" id="custome" #custm="ngModel" [(ngModel)]="local.costomes" required placeholder="15 personas">
+                            </div>
+                            <div *ngIf="custm.invalid && (custm.dirty || custm.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                              <div *ngIf="custm.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> Clientes aprox es requerido.
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="form-group row">
+                            <label for="ban" class="col-3 col-form-label">Baños:</label>
+                            <div class="col-9">
+                              <input type="number" name="ban" min="0" max="5" oninput="validity.valid||(value='')" class="form-control" id="ban" #ban="ngModel" [(ngModel)]="local.banios" required placeholder="1 baño">
+                            </div>
+                            <div *ngIf="ban.invalid && (ban.dirty || ban.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                              <div *ngIf="ban.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> Baños es requerido.
+                              </div>
+                            </div>
+                          </div>  
+
+                          <div class="form-group row">
+                            <label for="prec" class="col-3 col-form-label">Precio:</label>
+                            <div class="col-9">
+                              <input type="number" name="prec" min="1" max="999999" oninput="validity.valid||(value='')" class="form-control" id="prec" #prec="ngModel" [(ngModel)]="local.precio" required placeholder="precio por mes">
+                            </div>
+                            <div *ngIf="prec.invalid && (prec.dirty || prec.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                              <div *ngIf="prec.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> Precio es requerido.
+                              </div>
+                            </div>
+                          </div> 
+
+                          <div class="form-group row">
+                            <label for="ser" class="col-3 col-form-label">Servicios:</label>
+                            <div class="col-9">
+                              <select class="form-control" name="ser" #ser="ngModel" id="ser" multiple="multiple" [(ngModel)]="local.servicios" required>
+                                <option  *ngFor="let item of servicios" [ngValue]="item" >{{item}}</option>
+                              </select>
+                            </div>
+                            <div *ngIf="ser.invalid && (ser.dirty || ser.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                              <div *ngIf="ser.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> Se requiere al menos 1 servicio.
+                              </div>
+                            </div>
+
+                            <div class="m-2 card border-dark text-center" *ngFor="let item of local.servicios; index as i">
+                              <div class="text-dark bg-light-gray border-dark p-2">{{item}} </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="nom" class="col-3 col-form-label">Nombre del Local:</label>
+                            <div class="col-9">
+                              <input type="text" name="nom" class="form-control" id="nom" #nom="ngModel" minlength="2" maxlength="10" [(ngModel)]="local.nombre" required placeholder="A2" (ngModelChange)="comprobarNombre()">
+                            </div>
+                            <div *ngIf="nom.invalid && (nom.dirty || nom.touched)" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">
+                              <div *ngIf="nom.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> Nombre es requerido.
+                              </div>
+                              <div *ngIf="nom.errors.minlength || nom.errors.maxlength">
+                                <i class="fas fa-exclamation-circle"></i> Nombre debe tener entre 2 y 10 caracteres.
+                              </div>
+                            </div>
+                            <div *ngIf="nombreRepetido" class=" mt-1 text-danger col-sm-12 offset-md-3 col-md-9">Nombre ya asignado a otro local.
+                            </div>
+                          </div>
+                        <div class="row form-group"> 
+                          <label for="descrip" class="col-12 col-md-4">Descripci&oacute;n: </label>
+                          <div class="col-12 col-md-8 text-right"> Te quedan: {{tamTexto}} letras. </div> 
+                        </div> 
+                          <div class="row form-group"> 
+                            <textarea class="form-control mr-3 ml-3" id="descrip" placeholder="Ingresa la descripcion con un minimo de 10 caracteres..." id="descrip" name="descrip" #descrip="ngModel" [(ngModel)]="local.descripcion" minlength="10" rows="3" name="txtTexto" [maxlength]="tamMaxTexto" (ngModelChange)="cambiarTamTexto()" required >  
+                            </textarea>
+                            <div *ngIf="descrip.invalid && (descrip.dirty || descrip.touched)" class=" mt-1 text-danger col-sm-12">
+                              <div *ngIf="descrip.errors.required">
+                                <i class="fas fa-exclamation-circle"></i> La descripci&oacute;n es requerida.
+                              </div>
+                              <div *ngIf="descrip.errors.minlength">
+                                <i class="fas fa-exclamation-circle"></i> La descripci&oacute;n debe tener al menos 10 caracteres.
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label for="agree-term" class="label-agree-term"> <span><span></span></span>
+                              <i class="fa fa-facebook-square"></i>
+                              Publicar en facebook. </label>
+                            <input class="checkBox" type="checkbox" name="agree-term" id="agree-term" [disabled]="btnModificar" [(ngModel)]="postearEnFb" />
+                          </div>
+
+                          <div class="row">
+                              <div class="col-12 p-2">
+                                <button *ngIf="btnModificar" class="btn btn_get btn_get_two m-2" type="submit" (click)="modificarLocal()" [disabled]="!(formLocal.form.valid && !nombreRepetido)">MODIFICAR</button>
+                                <button *ngIf="btnGuardar" class="btn btn_get btn_get_two m-2" type="submit" (click)="guardarLocal()" [disabled]="!(formLocal.form.valid && arrayImagenesLocal.length > 0 && !nombreRepetido)">GUARDAR</button>
+                                <button *ngIf="btnGuardar" id="btnLimpiar" class="btn btn_get btn_get_two m-2" type="submit" (click)="limpiarLocal(); formLocal.reset()" [disabled]="trabajando" >LIMPIAR</button>
+                                <button *ngIf="btnModificar" class="btn btn_get btn_get_two m-2" (click)="cancelarModificacion(); formLocal.reset()" type="submit" [disabled]="trabajando" >CANCELAR</button>
+                                <button id="btnLimpiar2" class="d-none" type="submit" (click)="limpiarLocal(); formLocal.reset()" >limpiarModi</button>
+                              </div>
+                          </div>
+                    </form>
+                </div>
+                <div class="d-none d-md-block col-md-5 mt-0">
+                    <img src="../../../assets/local/formLocal.jpg" class="img-fluid" alt="formLocal">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!-- lista de los locales -->
+    <div class="titulo-tabla2 row p-3 mt-3 text-white">
+      <div class="col-12 col-md-7 h3">Listado de <strong>Locales </strong> </div>
+     <!--  <div class="col-12 col-md-5 h4">Buscar <input class="h4 ml-2" type="text" placeholder="buscar local"></div> -->
+    </div>
+    <!-- imprimir -->
+    <div class="row bg-white pb-3 pt-3">
+      <div class="col-12 text-right">
+        <button type="button" title="PRINT" class="btn btn_get btn_get_two m-2" (click)="imprimirJson()" ><i class="fas fa-print"></i> Imprimir Info</button>    
+      </div>
+    </div>
+
+    <div class="row justify-content-center bg-white ">
+        <div class="col-12">
+            <div class="table-responsive p-3">
+               
+                <table class="table table-striped" id="table-local"  [mfData]="locales" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead>
+                      <tr class="text-center">
+                        <th style="width: 10%"><mfDefaultSorter by="fechaModificacion">Ultima Modificacion</mfDefaultSorter></th>
+                        <th style="width: 10%"><mfDefaultSorter by="nombre">Nombre</mfDefaultSorter></th>
+                        <th style="width: 10%"><mfDefaultSorter by="precio">Precio Por Mes</mfDefaultSorter></th>
+                        <th style="width: 10%"><mfDefaultSorter by="superficie">Superficie</mfDefaultSorter></th>
+                        <th style="width: 10%"><mfDefaultSorter by="alquilado">Alquilado</mfDefaultSorter></th>
+                        <th style="width: 10%"><mfDefaultSorter by="banios">Baños</mfDefaultSorter></th>
+                        <th style="width: 10%"><mfDefaultSorter by="costomes">Clientes</mfDefaultSorter></th>
+                        <th style="width: 20%"><mfDefaultSorter by="">Listado Servicios</mfDefaultSorter></th>
+                        <th style="width: 20%"><mfDefaultSorter by="descripcion">Descripci&oacute;n del Local</mfDefaultSorter></th>
+                        <th style="width: 10%">Im&aacute;genes </th>
+                        <th style="width: 10%">Acciones:</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of mf.data">
+                        <td class="text-center"> {{item.fechaModificacion |  date:"dd-MM-yyyy"}} </td>
+                        <td class="text-center"> {{item.nombre | uppercase}} </td>
+                        <td class="text-right"> $ {{item.precio | number:'':'es'}} </td>
+                        <td class="text-right"> {{item.superficie}} m² </td>
+                        <td class="text-center"> {{item.alquilado == 1 ?  'SI' : 'NO' }} </td>
+                        <td class="text-right"> {{item.banios}} </td>
+                        <td class="text-right"> {{item.costomes}} </td>
+                        <td> 
+                          <div *ngFor="let serv of item.servicios">
+                            {{ serv}}.  
+                          </div> 
+                        </td>
+                        <td class="textoCortado"> {{item.descripcion}} </td>
+                        <td class="text-center"> <button type="button" class="btn verImagenes" (click)="cargarImagenArray(item)" data-toggle="modal" data-target="#imagenLocal">Ver Im&aacute;genes</button> </td>
+                        <td class="text-center"> 
+                          <button type="button" title="EDITAR" class="btn mr-1 mb-1 agrandado" [disabled]="item.alquilado" (click)="elegirLocal(item)" ><i class="fas fa-pencil-alt text-success"></i></button>    
+                          <button [disabled]="btnModificar" title="ELIMINAR" type="button"  [disabled]="item.alquilado" class="btn mr-1 mb-1 agrandado" (click)="cargarLocalBorrar(item)" data-toggle="modal" data-target="#localBorrar"><i class="fas fa-trash-alt text-danger"></i></button>         
+                        </td>     
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="10">
+                          <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                      </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-12 colorNo">.</div>
+    </div>
+  </div>  
+</div>
+    
+
+<!-- modal confirmacion borrar local -->
+<div class="modal fade" id="localBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog row" role="document">
+    <div class="modal-content col-12 text-center">
+      <div class="modal-header row">
+        <button type="button" class="close mr-0" data-dismiss="modal" aria-hidden="true">×</button>
+        <div class="col-12 ">
+          <i class="fas fa-times cruz-grande "></i>
+					<!-- <i class="far fa-window-close "></i> -->
+        </div>						
+        
+				<h4 class="col-12 modal-title w-100 mt-4">Esta seguro?</h4>	
+        
+      </div>
+      <div class="modal-body text-center row">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <strong> Nombre: </strong>
+            </div>
+            <div class="col-12 col-md-8">
+              {{localBorrar.nombre | uppercase}}
+            </div>
+            <div class="col-12 col-md-4">
+              <strong> Superficie: </strong>
+            </div>
+            <div class="col-12 col-md-8">
+              {{localBorrar.superficie}} m²
+            </div>
+            
+            <div class="col-12 col-md-4">
+              <strong> Descripci&oacute;n: </strong>
+            </div>
+            <div class="col-12 col-md-8 textoCortado">
+              {{localBorrar.descripcion}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer row text-center justify-content-center">
+        <div class="col-12">
+          <button type="button" class="btn btn-secondary m-2"  data-dismiss="modal">CANCELAR</button>
+          <button type="button" class="btn btn-danger m-2"  data-dismiss="modal" (click)="borrarLocal()">ACEPTAR</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal imagenes de un local -->
+<div class="modal fade " id="imagenLocal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog row p-0" role="document">
+    <div class="modal-content col-12 text-center p-0">    
+      <div class="modal-body text-center row ">
+        <div class="col-12">
+          <ngb-carousel *ngIf="arrayImgMuestras" [showNavigationArrows]="true" [showNavigationIndicators]="true">
+          <ng-template ngbSlide *ngFor="let image of arrayImgMuestras">
+            <div class="picsum-img-wrapper">
+              <img [src]="image" alt="Random slide" class="img-fluid" width="100%" height="auto">
+            </div>
+            <div class="carousel-caption">
+              <h4>Imagenes del local</h4>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+        </div>      
+      </div>
+      <div class="modal-footer row text-center justify-content-center">
+        <div class="col-12">
+          <button type="button" class="btn verImagenes m-2"  data-dismiss="modal" (click)="limpiarArrayImg()">CERRAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal ampliar imagen -->
+<div class="modal fade" id="ampliarImagen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog row  modal-lg" role="document">
+    <div class="modal-content col-12 text-center">
+      
+      <div class="modal-body text-center row">
+        <div class="col-12">
+          <img [src]="arrayImagenesLocal[indiceBorrarImg]" alt="imgapliada" width="100%" height="100%" >
+        </div>
+      </div>
+      <div class="modal-footer row text-center justify-content-center">
+        <div class="col-12">
+          <button type="button" class="btn btn-secondary m-2"  data-dismiss="modal">CERRAR</button>
+          <button type="button" class="btn btn-danger m-2"  data-dismiss="modal" (click)="emilinarImagenDelArray()">ELIMINAR</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,153 @@
+<div class="colorFondo">
+  <div class="container1">
+
+    <!-- SECCION CABECERA-->
+    <section class="header-section">
+      <div class="center-div">
+        <h1 class="font-weight-bold">Galeria JUJUY</h1>
+        <p>Nuestras puertas siempre estan abiertas.</p>
+        <div class="header-buttons">
+          <a class="link" [routerLink]="['/nosotros']">Nosotros</a>
+          <a clas="link" [routerLink]="['/contactenos']">Contactenos</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <br>
+
+  <!-- SECCION OPCIONES-->
+  <section class="row justify-content-center color-fondo   align-items-center pl-3  mt-5 pt-5 pb-5">
+    <div class="card col-md-3 col-12 mr-3 align-items-center opcion1 card-efect">
+      <div class="text-center">
+        <div class="text-light gba-black-strong py-5 px-4">
+          <p class="h5 py-3"><i class="fas fa-file-contract"></i> ADMINISTRACIÓN</p>
+          <!-- <p class="">Aqui encontrará los detalles de su o sus contratos vigentes.</p> -->
+          <p class="">Conoce como trabajamos en la celebraci&oacute;n de los contratos.</p>
+          <a class="" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+    <div class="card col-md-3 col-12 mr-3 align-items-center opcion2 card-efect">
+      <div class="text-center">
+        <div class="text-light gba-black-strong py-5 px-4">
+          <p class="h5 py-3"><i class="fas fa-store-alt"></i> LOCALES DISPONIBLES</p>
+          <p>Crea tu propio negocio en uno de los shopping mas concurridos del país.</p>
+          <!-- CON MOVER A LOCALES DISPNIBLES ME DESPLAZO AL SPAN LOCALES-->
+          <a class="" class="stretched-link"
+            (click)="misLocales.scrollIntoView({ behavior: 'smooth', block: 'start' })"></a>
+        </div>
+      </div>
+    </div>
+    <div class="card col-md-3 col-12 mr-3 align-items-center opcion3 card-efect"
+      *ngIf="loginService.userLoggedIn == true">
+      <div class="text-center">
+        <div class="text-light gba-black-strong py-5 px-4">
+          <p class="h5 py-3"><i class="fas fa-mail-bulk"></i> CONTÁCTENOS</p>
+          <p>Contás con una sección exclusiva para comunicarte con nosotros.</p>
+          <a class="" href="contactenos" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+    <div class="card col-md-3 col-12 mr-3 align-items-center opcion4 card-efect"
+      *ngIf="loginService.userLoggedIn == false">
+      <div class="text-center">
+        <div class="text-light gba-black-strong py-5 px-4">
+          <p class="h5 py-3"><i class="fas fa-users-cog"></i> SOBRE NOSOTROS</p>
+          <p>Conocé mas sobre nuestra cultura de trabajo y nuestras políticas.</p>
+          <a class="" class="stretched-link"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contenedor2">
+    <h3 *ngIf="noticias.length>0" class="font-weight-bold mb-3"> &Uacute;LTIMAS NOTICIAS</h3>
+    <div class="card-columns">
+      <!-- MODIFICADO PARA QUE SOLO MUESTRE LAS ÚLTIMAS 3 NOTICIAS-->
+      <div *ngFor="let noticia of noticias | slice:0:3">
+        <div class="card">
+          <img class="card-img-top" [src]="noticia.imagen" alt="Card image cap">
+          <div class="card-body card-body-cascade text-center pb-0">
+            <h4 class="card-title"><strong>{{noticia.titulo}}</strong></h4>
+            <p class="card-text">{{noticia.descripcion}} </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCION LOCALES -->
+  <div>
+    <span #misLocales>
+    </span>
+    <div class="row mb-4 mt-3">
+      <h3 class="col-12 pl-5 bordeTexto font-weight-bold">LOCALES DISPONIBLES</h3>
+    </div>
+    <div class="row justify-content-center p-2">
+      <div *ngFor="let local of locales; index as i"
+        class="sombra col-12 col-sm-10 col-md-11 col-lg-10 ml-4 mr-4 mt-2 mb-2 card bordeLocal">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-5 ">
+            <img [src]="local.imagen[0]" class="img-fluid" width="80%" height="80%" alt="imagen local">
+
+          </div>
+          <div class="col-12 col-md-7">
+            <h5 class="text-primary pt-2 mb-lg-4">Execelente local <strong> {{local.nombre}} </strong> </h5>
+            <div class="mb-lg-4"> <strong class="mr-2">Superficie de </strong>{{local.superficie}} m². <strong
+                class="ml-5"> {{local.costomes}} Clientes Aprox.</strong> </div>
+            <div class="mb-lg-4"> <strong> {{local.banios}} Baños.</strong> </div>
+            <div class="mb-lg-4"> <strong> Precio de $ {{local.precio | number:'':'es'}} por Mes </strong> </div>
+            <div> {{local.descripcion}} </div>
+
+          </div>
+          <div class="col-12 col-md-5">
+
+            <button class="btn mt-2 boton btn-block" (click)="cargarLocal(local)" type="submit">Ver Mas</button>
+          </div>
+          <div class="col-12 col-md-7">
+            <div class="text-center pt-3"> <i class="fas fa-history"></i> publicado {{publicacionesEnDias[i]}} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="contenedor2">
+    <div class="w-100 d-block"></div>
+    <br>
+
+    <!-- sponsors-->
+    <div class="contenedor2">
+      <div class="row col d-flex align-items-center justify-content-center">
+        <div class="block ">
+          <div class="logo">
+            <img
+              src="https://images.ctfassets.net/5edkjb2k8u2k/5GvF8UKQydt3gghUIvmQ8g/50a107da5a788c75fd058ffb691c8697/samsung.png?w"
+              alt="ss-logo">
+          </div>
+
+          <div class="logo">
+            <img
+              src="https://images.ctfassets.net/5edkjb2k8u2k/3AgTOj8gD4gja2parMsGvx/a676b21ff84f3f177022f39f23c3a667/shopify_glyph.svg?w"
+              alt="ss-logo">
+          </div>
+
+          <div class="logo">
+            <img
+              src="https://images.ctfassets.net/5edkjb2k8u2k/2cdIYtg7Sa15JYVrt08bVl/b52168d47f561938e177433bf8a4e287/redbull-logo-svg-vector.svg?w"
+              alt="ss-logo">
+          </div>
+
+          <div class="logo">
+            <img
+              src="https://images.ctfassets.net/5edkjb2k8u2k/015egmlFIQHmNC6w8fjJ8E/d0c4624fd2655d8451a37552f98426e1/volkswagen-logo-svg-vector.svg?w"
+              alt="ss-logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

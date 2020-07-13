@@ -1,0 +1,205 @@
+<div class="bg-color-fondo py-3">
+    <div class="container py-5 bg-light borde-sombra personalizado fadeInDown">
+        <div class="row mt-3 justify-content-center">
+            <div class="col-12 col-md-4 col-lg-5 col-xl-4 mx-auto ">
+                <p class="text-center h4 font-weight-bold">{{ loginService.userLogueadoDisplay | uppercase}}</p>
+                <div class="text-center">
+                    <img [src]="usuario.fotoPerfil" class="img-thumbnail rounded-circle img-fluid tamanio-imagen" alt="fotoperfil">
+                    <div class="col-9 mx-auto">
+                        <label for="imagen" class="subir mt-2">
+                      <i class="fas fa-cloud-upload-alt"></i> Cambiar
+                    </label>
+                        <input type="file" name="imagen" class="form-control" id="imagen" alife-file-to-base64 (onFileChanged)="onFileChanges($event)" accept="image/x-png,image/gif,image/jpeg" required style='display: none;'>
+                    </div>
+                </div>
+                <br>
+                <ul class="list-group">
+                    <li class="list-group-item text-muted h5 text-center">Bandeja de Mensajes<i class="far fa-mailbox"></i></li>
+                    <li class="list-group-item text-right h6"><span class="pull-left"><a data-toggle="tab" class="mr-1 btn-default" href="#mensajes" (click)="obtenerMensajes()"><i class="far fa-envelope"></i><strong> Nuevos</strong></a></span>{{cantidadMensajes}}</li>
+                    <li class="list-group-item text-right h6"><span class="pull-left"><a data-toggle="tab" class="mr-1 btn-default" href="#mensajes" (click)="obtenerMensajesLeidos()"><i class="far fa-envelope-open"></i><strong> Leídos</strong></a></span>{{cantidadMensajesLeidos}}</li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-8 col-lg-7 col-xl-8">
+                <ul class="nav nav-pills nav-justified nav-tabs">
+                    <li class="py-2 text-dark"><a class="nav-item active nav-link text-dark font-weight-bold" data-toggle="tab" href="#mensajes">Centro de Mensajes</a></li>
+                    <li class="py-2"><a class="nav-item nav-link mr-1 text-dark font-weight-bold" data-toggle="tab" href="#datospersonales">Datos Personales</a></li>
+                    <li class="py-2"><a class="nav-item nav-link mr-1 text-dark font-weight-bold" data-toggle="tab" href="#datoscuenta">Datos de la Cuenta</a></li>
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="datospersonales">
+                        <form #formdatospersonales="ngForm" class="form" (ngSubmit)="onSubmit(formdatospersonales)" action="#" method="post" id="personales">
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="dnii"><p class="h5">DNI</p></label>
+                                    <output type="text" class="form-control rounded-lg" name="dni" id="dni" *ngIf="modificar == false">{{ propietario.dni }}</output>
+                                    <input type="number" class="form-control rounded-lg" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="dnii" required id="dnii" #dnii="ngModel" *ngIf="modificar == true" placeholder="DNI" [ngClass]="{'modificar-input': modificar == true}" [(ngModel)]="propietario.dni">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="apellidoi"><p class="h5">Apellido</p></label>
+                                    <output type="text" class="form-control rounded-lg" name="apellido" *ngIf="modificar == false" id="apellido">{{ propietario.apellido }}</output>
+                                    <input type="text" class="form-control rounded-lg" name="apellidoi" required *ngIf="modificar == true" id="apellidoi" #apellidoi="ngModel" placeholder="Apellido" [ngClass]="{'modificar-input': modificar == true}" [(ngModel)]="propietario.apellido">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="nombrei"><p class="h5">Nombre</p></label>
+                                    <output type="text" class="form-control rounded-lg" name="nombre" *ngIf="modificar == false" id="nombre">{{ propietario.nombres }}</output>
+                                    <input type="text" class="form-control rounded-lg" name="nombrei" required *ngIf="modificar == true" id="nombrei" #nombrei="ngModel" placeholder="Nombre" [ngClass]="{'modificar-input': modificar == true}" [(ngModel)]="propietario.nombres">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="email2"><p class="h5">E-MAIL</p></label>
+                                    <output type="email2" class="form-control rounded-lg" name="email2" id="email2">{{ propietario.email }}</output>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="tel"><p class="h5">Telefono</p></label>
+                                    <output type="tel" class="form-control rounded-lg" name="tel" *ngIf="modificar == false" id="tel">{{ propietario.telefono }}</output>
+                                    <input type="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control rounded-lg" name="teli" required *ngIf="modificar == true" id="teli" #teli="ngModel" placeholder="Telefono" [ngClass]="{'modificar-input': modificar == true}"
+                                        [(ngModel)]="propietario.telefono">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12 efectoScale">
+                                    <button class="btn boton-personalizado m-1" *ngIf="modificar == false" name="mod" id="mod" (click)="modificar=!modificar"><i class="glyphicon glyphicon-ok-sign "></i> Modificar</button>
+                                    <button class="btn boton-personalizado m-1" type="submit" *ngIf="modificar == true" [disabled]="!formdatospersonales.valid" (click)="updatePropietario();modificar=!modificar"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+                                    <button class="btn boton-personalizado m-1" (click)="modificar=false" (click)="restaurarPropietario()"> Cancelar</button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="tab-pane" id="datoscuenta">
+                        <form class="form" #formcuenta="ngForm" (ngSubmit)="onSubmit(formcuenta)" action="##" method="post" id="cuenta">
+                            <div class="form-group">
+
+                                <div class="col-xs-6">
+                                    <label for="email"><p class="h5">Usuario</p></label>
+                                    <output type="email" class="form-control rounded-lg" name="email" id="email">{{ usuario.usuario }}</output>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="password"><p class="h5"> Cambiar Password </p></label>
+                                    <input type="password" class="form-control rounded-lg" id="password" name="password" #pass="ngModel" minlength="6" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" #pass="ngModel" placeholder="Ingrese nueva password *" [(ngModel)]="usuario.password"
+                                        [ngClass]="{ 'is-invalid':  pass.invalid && (pass.dirty || pass.touched) } " />
+                                    <div *ngIf="pass.invalid && (pass.dirty || pass.touched)" class="invalid-feedback strong col-auto">
+                                        <div *ngIf="pass.errors.required">
+                                            Ingrese una contraseña
+                                        </div>
+                                        <div *ngIf="pass.errors.minlength">
+                                            La contraseña debe tener como minimo 6 caracteres
+                                        </div>
+                                        <div *ngIf="pass.errors.pattern">
+                                            La contraseña debe tener 1 letra mayuscula, 1 letra minuscula y 1 numero
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control rounded-lg mt-1" placeholder="Repita nuevo password" name="password2" id="password2" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" [(ngModel)]="passwordAux" [ngClass]="{ 'border-danger': verificarPassword() == false && pass.touched}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="perfil"><p class="h5">Perfil</p></label>
+                                    <output type="text" class="form-control rounded-lg" name="perfil" id="perfil">{{ usuario.perfil }}</output>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <br>
+                                    <button class="btn boton-personalizado" type="submit" [disabled]="verificarPassword() == false || !formcuenta.valid" (click)="updatePasswordUsuario()" type="submit"><i class="glyphicon glyphicon-ok-sign" ></i> Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <section class="tab-pane active" id="mensajes">
+                        <div class="mail-box lg-side">
+                            <section class="inbox-body">
+                                <div class="mail-option">
+                                    <div class="btn-group mb-1">
+                                        <button class="btn btnPersonalizado2" (click)="obtenerMensajes()"> <i class=" fa fa-refresh"></i></button>
+                                    </div>
+                                </div>
+                                <table class="table table-hover table-responsive" [mfData]="mensajes" #mf="mfDataTable" [mfRowsOnPage]="10">
+                                    <thead>
+                                        <tr class="encabezado text-white h5">
+                                            <th scope="col-auto" class="py-3" style="width: 5%">
+                                                <mfDefaultSorter by="para">Leido</mfDefaultSorter>
+                                            </th>
+                                            <th scope="col-auto" class="py-3" style="width: 45%">
+                                                <mfDefaultSorter by="desde">Asusto</mfDefaultSorter>
+                                            </th>
+                                            <th scope="col-auto" class="py-3" style="width: 30%">
+                                                <mfDefaultSorter by="mensaje">Remitente</mfDefaultSorter>
+                                            </th>
+                                            <th scope="col-auto" class="py-3" style="width: 10%">
+                                                <mfDefaultSorter by="fecha">Fecha de env&iacute;o</mfDefaultSorter>
+                                            </th>
+                                            <!--
+                                        <th scope="col-auto" *ngIf="mensaje.leido == true">
+                                            <mfDefaultSorter by="mensaje"> </mfDefaultSorter>
+                                        </th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let mensaje of mf.data" class="puntero">
+                                            <td class="inbox-small-cells" scope="row"> <input type="checkbox" readonly onclick="return false;" class="mail-checkbox" [(ngModel)]="mensaje.leido"></td>
+                                            <td class="view-message  dont-show font-weight-bold" (click)="leerMensaje(mensaje, leerMensajeModal)">{{mensaje.asunto}}</td>
+                                            <td (click)="leerMensaje(mensaje, leerMensajeModal)">{{mensaje.usuarioRemitente}}</td>
+                                            <td class="text-right" (click)="leerMensaje(mensaje, leerMensajeModal)">{{mensaje.fechaEnviado | date: 'dd/MM/yyyy HH:mm'}}</td>
+                                            <!-- <td *ngIf="mensaje.leido == true">
+                                            <button class="btn btn-dark text-light" (click)="eliminarMensaje(mensaje)">Eliminar</button>
+                                        </td>-->
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4">
+                                                <mfBootstrapPaginator [rowsOnPageSet]="[10,20,30]"></mfBootstrapPaginator>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </section>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-8">
+                    <ng-template #leerMensajeModal let-modal class="modal">
+                        <div class="modal-content fadeIn">
+                            <div class="modal-header text-center encabezado-modal text-light">
+                                <h4 class="modal-title w-100 font-weight-bold"></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modal.close()">
+                       <span aria-hidden="true">&times;</span>
+                      </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-4">
+                                    <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-portrait"></i> Remitente </label>
+                                    <output type="text" id="orangeForm-name" class="form-control validate">{{mensaje.usuarioRemitente}}</output>
+                                </div>
+                                <div class="md-form mb-5">
+                                    <label data-error="wrong" data-success="right" for="orangeForm-name"><i class="fas fa-user-tie"></i> Asunto </label>
+                                    <textarea type="text" rows="2" id="orangeForm-name" class="form-control validate">{{ mensaje.asunto }}</textarea>
+                                </div>
+                                <div class="md-form mb-4">
+                                    <label data-error="wrong" data-success="right" for="orangeForm-pass"><i class="fas fa-user-tie"></i> Mensaje </label>
+                                    <textarea readonly type="text" rows="4" id="orangeForm-name" class="form-control validate"> {{ mensaje.texto }}</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="button" class="btn btn-outline-dark btn-light" (click)="modal.close()">Cerrar</button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

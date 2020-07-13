@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-light sticky-top fondoNuevo">
+    <div class="navbar-header ">
+        <a class="navbar-brand text-white" href="#">Galería <b>JUJUY</b></a>
+        <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=" "><i class="fas fa-bars  "></i></span>
+
+        </button>
+    </div>
+    <!-- Collection of nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item ">
+                <a class="nav-link text-white" [routerLink]="['inicio']">Inicio<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" [routerLink]="['noticias']">Noticias</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" [routerLink]="['nosotros']">Nosotros</a>
+            </li>
+            <!-- EL MENU INICIO MOSTRARÁ UNA LISTA DE LOCALES DISPONIBLES POR LO TANTO AL SELECCIONAR
+        UN LOCAL QUE SE ENCUENTRE DISPONIBLE EL SITIO LO LLEVARÁ A ESTA PAGINA PARA REALIZAR
+        /CONFIRMAR EL CONTRARO CON LOS DUEÑOS ATRAVES DEL SISTEMA-->
+            <li class="nav-item" *ngIf="loginService.userLoggedIn">
+                <a class="nav-link text-white" [routerLink]="['contactenos']">Redactar Novedad</a>
+            </li>
+            <li class="nav-item" *ngIf="loginService.userLoggedIn && (loginService.userPerfil === 'Administrativo' || loginService.userPerfil === 'Administrador')">
+                <a class="nav-link text-white" [routerLink]="['noticia']">Redactar Noticia</a>
+            </li>
+            <li class="nav-item" *ngIf="loginService.userLoggedIn && (loginService.userPerfil === 'Administrador')">
+                <a class=" nav-link text-white" [routerLink]="['usuarios']">Gesti&oacute;n Usuarios</a>
+            </li>
+            <li class="nav-item" *ngIf="loginService.userLoggedIn && (loginService.userPerfil === 'Administrativo' || loginService.userPerfil === 'Administrador')">
+                <a class="nav-link text-white" [routerLink]="['propietarios']">
+                    <!-- Gesti&oacute;n -->Propietarios</a>
+            </li>
+            <!-- SECCION CRUD DE LOCALES -->
+            <li class="nav-item" *ngIf="loginService.userLoggedIn && (loginService.userPerfil === 'Administrativo' || loginService.userPerfil === 'Administrador')">
+                <a class="nav-link text-white" [routerLink]="['local']">
+                    <!-- Gesti&oacute;n  -->Locales</a>
+            </li>
+            <!-- SECCION CRUD de contratos -->
+            <li class="nav-item" *ngIf="loginService.userLoggedIn && (loginService.userPerfil === 'Administrativo' || loginService.userPerfil === 'Administrador')">
+                <a class="nav-link text-white" [routerLink]="['contrato']">
+                    <!-- Gesti&oacute;n  -->Contratos</a>
+            </li>
+            <li class="nav-item" *ngIf="loginService.userLoggedIn && (loginService.userPerfil === 'Administrativo' || loginService.userPerfil === 'Administrador')">
+                <a class="nav-link text-white" [routerLink]="['novedades']">Novedades  <span *ngIf="novedadService.cantNovedades > 0" class=" badge badge-danger">{{novedadService.cantNovedades}}</span></a>
+            </li>
+        </ul>
+        <div class="btn-group ml-lg-5 ">
+            <button type="button" *ngIf="!loginService.userLoggedIn" [routerLink]="['signin']" class="btn btn-personalizado" ria-haspopup="true" aria-expanded="false">
+            Sign In
+          </button>
+            <button type="button" *ngIf="loginService.userLoggedIn" class="btn btn-personalizado dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ loginService.userLogueadoDisplay }}
+          </button>
+            <div class="dropdown-menu dropdown-menu-lg-right" *ngIf="loginService.userLoggedIn">
+                <a class="btn btn-light get-started-btn dropdown-item" [routerLink]="['profile']">Mi Cuenta <span *ngIf="novedadService.cantMensajePorUser > 0" class="badge badge-danger">{{novedadService.cantMensajePorUser}}</span></a>
+
+                <a class="btn btn-light get-started-btn dropdown-item" (click)="loginService.logout()">Sign Out</a>
+            </div>
+        </div>
+    </div>
+</nav>

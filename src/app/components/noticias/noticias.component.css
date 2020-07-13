@@ -1,0 +1,32 @@
+.container2 {
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  background: rgb(225, 236, 245);
+  /* Old browsers */
+  background: -moz-linear-gradient(top, rgb(220, 232, 241) 0%, rgb(193, 207, 214) 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgb(220, 231, 240) 0%, rgb(198, 212, 218) 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgb(219, 230, 238) 0%, rgb(171, 190, 199) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.card {
+  width: 100%;
+  border-radius: 4px;
+  transition: all 1.5s ease;
+}
+
+.card:hover {
+  transform: scale(1.04);
+}
+
+.close {
+  outline: none;
+}
